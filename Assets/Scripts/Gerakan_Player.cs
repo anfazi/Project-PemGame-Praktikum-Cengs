@@ -5,9 +5,17 @@ using UnityEngine;
 public class Gerakan_Player : MonoBehaviour
 {
     //pergerakan
-    private float kecepatan = 7f;
+    [SerializeField] public float kecepatan;
     public float x;
     public float z;
+
+    //lompat
+    [SerializeField] private float speed_jump = 3f;
+
+    //lari
+    [SerializeField] private float speed_jalan = 4f;
+    [SerializeField] private float speed_lari = 7f;
+ 
 
     //gravitasi
     [SerializeField] private float gravitasi = -9.81f;
@@ -31,6 +39,8 @@ public class Gerakan_Player : MonoBehaviour
     {
         gravity();
         bergerak();
+        lompat();
+        jalan(); //lari
     }
 
     private void bergerak(){
@@ -47,7 +57,22 @@ public class Gerakan_Player : MonoBehaviour
         if (isGrounded && velocity.y <0){
             velocity.y = -2f;
         }
+    }
+
+    private void lompat(){
+        if (Input.GetButtonDown("Jump") && isGrounded){
+            velocity.y = Mathf.Sqrt(speed_jump * -2f * gravitasi);
+        }
         velocity.y += gravitasi * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void jalan(){
+        if (Input.GetKey(KeyCode.LeftShift)){
+            kecepatan = speed_jalan;
+        }
+    else{   
+        kecepatan = speed_lari;
+        }
     }
 }
