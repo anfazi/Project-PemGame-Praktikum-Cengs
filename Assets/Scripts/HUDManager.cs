@@ -31,7 +31,6 @@ public class HUDManager : MonoBehaviour
     void Update()
     {
         kecepatan = player.GetComponent<Gerakan_Player>().kecepatan;
-
         input_x = player.GetComponent<Gerakan_Player>().x;
         input_z = player.GetComponent<Gerakan_Player>().z;
 
