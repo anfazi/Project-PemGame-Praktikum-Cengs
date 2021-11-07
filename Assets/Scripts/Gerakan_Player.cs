@@ -13,8 +13,8 @@ public class Gerakan_Player : MonoBehaviour
     [SerializeField] private float speed_jump = 3f;
 
     //lari
-    [SerializeField] private float speed_jalan = 4f;
-    [SerializeField] private float speed_lari = 7f;
+    public float speed_jalan = 4f;
+    public float speed_lari = 7f;
  
 
     //gravitasi
