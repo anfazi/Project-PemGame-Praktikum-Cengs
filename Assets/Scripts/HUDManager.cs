@@ -5,6 +5,8 @@ using UnityEngine.UI; //energy dipakai format image
 
 public class HUDManager : MonoBehaviour
 {
+    [SerializeField] GameObject pauseMenu;
+    private bool GameIsPaused = false;
     //clock
     public Text time;
     //-----
@@ -37,6 +39,7 @@ public class HUDManager : MonoBehaviour
         EnergyDrain();
         UpdateEnergy();
         UpdateTime();
+        ShowPauseMenu();
         
     }
 
@@ -81,5 +84,30 @@ public class HUDManager : MonoBehaviour
             gameMinutes = minutes.ToString();
         }
         time.text = gameHours + " : " + gameMinutes;
+    }
+
+    private void ShowPauseMenu(){
+        if(Input.GetKeyDown(KeyCode.Escape)){
+            if(GameIsPaused){
+                Resume();
+            }
+            else{
+                Pause();
+            }
+        }
+    }
+
+    void Resume(){
+        pauseMenu.SetActive(false);
+        GameIsPaused = false;
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void Pause(){
+        pauseMenu.SetActive(true);
+        GameIsPaused = true;
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 }
