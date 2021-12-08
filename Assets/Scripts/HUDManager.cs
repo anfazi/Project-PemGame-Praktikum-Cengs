@@ -6,7 +6,8 @@ using UnityEngine.UI; //energy dipakai format image
 public class HUDManager : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
-    private bool GameIsPaused = false;
+    public static bool GameIsPaused = false;
+    public Player playerInstance;
     //clock
     public Text time;
     //-----
@@ -20,6 +21,10 @@ public class HUDManager : MonoBehaviour
     private float input_x;
     private float input_z;
     //-----
+    //hud darah
+    private float darah;
+    private float maxDarah = 100f;
+    public Image currentdarah;
 
     // Start is called before the first frame update
     void Start()
@@ -35,11 +40,13 @@ public class HUDManager : MonoBehaviour
         kecepatan = player.GetComponent<Gerakan_Player>().kecepatan;
         input_x = player.GetComponent<Gerakan_Player>().x;
         input_z = player.GetComponent<Gerakan_Player>().z;
+        darah = player.GetComponent<sistem_Darah>().darah_player;
 
         EnergyDrain();
         UpdateEnergy();
         UpdateTime();
         ShowPauseMenu();
+        UpdateDarah();
         
     }
 
@@ -51,11 +58,11 @@ public class HUDManager : MonoBehaviour
                 }
             }
         }else{
-            if(energy < maxEnergy){
+            if(energy < maxEnergy ){
                 energy += 15 * Time.deltaTime;
             }
         }
-        UpdateEnergy();
+        //UpdateEnergy();
     }
 
     private void UpdateEnergy(){
@@ -97,17 +104,26 @@ public class HUDManager : MonoBehaviour
         }
     }
 
-    void Resume(){
+    public void Resume(){
         pauseMenu.SetActive(false);
         GameIsPaused = false;
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void Pause(){
+    public void Pause(){
         pauseMenu.SetActive(true);
         GameIsPaused = true;
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    public void SaveGame(){
+        SaveSystem.SavePlayer(playerInstance);
+    }
+
+    private void UpdateDarah(){
+        float ratio = darah / maxDarah;
+        currentdarah.rectTransform.localScale = new Vector3(ratio, 1, 1);
     }
 }

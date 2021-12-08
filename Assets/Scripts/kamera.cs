@@ -5,20 +5,29 @@ using UnityEngine;
 public class kamera : MonoBehaviour
 {
     //variabel
-    [SerializeField] private float sensivity;
+    [SerializeField] private float kecepatanRotasi = 100f;
+    [SerializeField] private float mouseX, mouseY;
+
     //referensi
-    private Transform parent;
+    public Transform player, target;
     // Start is called before the first frame update
     void Start()
     {
-        parent = transform.parent;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * sensivity * Time.deltaTime;
-        parent.Rotate(Vector3.up, mouseX);
+        mouseX += Input.GetAxis("Mouse X") * kecepatanRotasi;
+        mouseY -= Input.GetAxis("Mouse Y") * kecepatanRotasi;
+
+        mouseY = Mathf.Clamp(mouseY, -35, 60);
+        transform.LookAt(target);
+
+        target.rotation = Quaternion.Euler(mouseY, mouseX, 0);
+        player.rotation = Quaternion.Euler(0, mouseX, 0);
+        }
+
     }
-}
+
