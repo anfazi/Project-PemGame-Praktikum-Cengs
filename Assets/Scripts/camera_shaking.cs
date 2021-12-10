@@ -16,7 +16,7 @@ public class camera_shaking : MonoBehaviour
     {
         kamera = Camera.main.transform;
         startPosition = kamera.localPosition;
-        initialDuration = duration;
+        initialDuration = duration; 
     }
 
     // Update is called once per frame
@@ -37,6 +37,12 @@ public class camera_shaking : MonoBehaviour
 
     private void OnTriggerEnter(Collider other){
         if (other.tag == "Obstacle"){
+            shouldShake = true;
+        }
+        if (other.tag == "Fire"){
+            shouldShake = true;
+        }
+        if (other.tag == "Musuh"){
             shouldShake = true;
         }
     }

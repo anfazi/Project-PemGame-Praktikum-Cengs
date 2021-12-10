@@ -18,7 +18,8 @@ public class obstacle : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other){
-        if (player){
+        if (player)
+        {
             Destroy(gameObject);
         }
     }

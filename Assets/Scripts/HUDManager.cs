@@ -2,9 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; //energy dipakai format image
+using UnityEngine.SceneManagement;
 
 public class HUDManager : MonoBehaviour
 {
+    //hud gameover
+    [SerializeField] GameObject GameOverMenu;
+    [SerializeField] GameObject information;
+    string info;
+    //---------
     [SerializeField] GameObject pauseMenu;
     public static bool GameIsPaused = false;
     public Player playerInstance;
@@ -21,6 +27,7 @@ public class HUDManager : MonoBehaviour
     private float input_x;
     private float input_z;
     //-----
+
     //hud darah
     private float darah;
     private float maxDarah = 100f;
@@ -30,8 +37,11 @@ public class HUDManager : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
-
         kecepatanLari = player.GetComponent<Gerakan_Player>().speed_lari;
+
+        //restart
+        GameIsPaused = false;
+        Time.timeScale = 1f;
     }
 
     // Update is called once per frame
@@ -47,6 +57,13 @@ public class HUDManager : MonoBehaviour
         UpdateTime();
         ShowPauseMenu();
         UpdateDarah();
+
+        gameOver();
+        //info
+        info = player.GetComponent<sistem_Darah>().info;
+
+        Text pesan = information.GetComponent<Text>();
+        pesan.text = info;
         
     }
 
@@ -62,7 +79,7 @@ public class HUDManager : MonoBehaviour
                 energy += 15 * Time.deltaTime;
             }
         }
-        //UpdateEnergy();
+        UpdateEnergy();
     }
 
     private void UpdateEnergy(){
@@ -125,5 +142,20 @@ public class HUDManager : MonoBehaviour
     private void UpdateDarah(){
         float ratio = darah / maxDarah;
         currentdarah.rectTransform.localScale = new Vector3(ratio, 1, 1);
+    }
+
+    private void gameOver(){
+        if (darah < 1){
+            //player mati
+            GameOverMenu.SetActive(true);
+            GameIsPaused = true;
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+
+    public void restart(){
+        SceneManager.LoadScene("MainMenu");
     }
 }

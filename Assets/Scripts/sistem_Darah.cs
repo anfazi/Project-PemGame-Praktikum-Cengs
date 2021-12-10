@@ -5,6 +5,7 @@ using UnityEngine;
 public class sistem_Darah : MonoBehaviour
 {
     public float darah_player;
+    public string info;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +26,21 @@ public class sistem_Darah : MonoBehaviour
 
     private void OnTriggerEnter(Collider other){
         if(other.tag == "Obstacle"){
-            darah_player -= 30f;
+            darah_player -= 30;
             Debug.Log("Darah ="+ darah_player);
+            info = "Jangan makan jamur beracun";
+        }
+        if(other.tag == "Fire"){
+            darah_player -= 30;
+            Debug.Log("Darah ="+ darah_player);
+            info = "Aduh kahuruan";
+        }
+
+        //labalaba
+        if(other.tag == "Musuh"){
+            darah_player -= 30;
+            Debug.Log("Darah ="+ darah_player);
+            info = "Dihakan laba laba";
         }
     }
 }
